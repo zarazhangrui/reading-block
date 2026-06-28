@@ -1,0 +1,652 @@
+/* styles.css — shared "reading room" theme for the popup and the settings page.
+   ------------------------------------------------------------------------
+   Aesthetic: warm paper, espresso ink, one deep library-green accent.
+   Fonts are served from the operating system (no network calls), with a
+   curated serif stack so the wordmark feels literary rather than generic. */
+
+:root {
+  /* Paper & ink */
+  --paper: #f6efe1;
+  --paper-2: #fbf6ec;
+  --paper-3: #ffffff;
+  --ink: #241d13;
+  --ink-soft: #6d6049;
+  --ink-faint: #9a8c72;
+  --line: #e6dcc6;
+  --line-strong: #d8cbae;
+
+  /* Accents */
+  --green: #1c6b54;
+  --green-deep: #0f4838;
+  --green-tint: #e7efe9;
+  --ember: #bf5a2c; /* used sparingly: destructive hover, unread mark */
+
+  /* Type */
+  --display: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino,
+    Charter, Georgia, serif;
+  --sans: "Avenir Next", Avenir, "Segoe UI", system-ui, -apple-system, sans-serif;
+
+  /* Shape */
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow: 0 10px 30px -12px rgba(40, 30, 12, 0.35);
+  --shadow-sm: 0 2px 8px -3px rgba(40, 30, 12, 0.3);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  color: var(--ink);
+  /* Layered paper atmosphere: a soft warm glow plus a faint "laid paper"
+     texture made from a barely-visible repeating gradient. */
+  background-color: var(--paper);
+  background-image: radial-gradient(
+      120% 80% at 100% 0%,
+      rgba(28, 107, 84, 0.06),
+      transparent 60%
+    ),
+    radial-gradient(100% 60% at 0% 100%, rgba(191, 90, 44, 0.05), transparent 55%),
+    repeating-linear-gradient(
+      0deg,
+      rgba(120, 100, 60, 0.035) 0px,
+      rgba(120, 100, 60, 0.035) 1px,
+      transparent 1px,
+      transparent 4px
+    );
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* --- Wordmark, shared --------------------------------------------------- */
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.brand .mark {
+  font-family: var(--display);
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+.brand .sub {
+  font-family: var(--sans);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--ink-faint);
+}
+
+/* --- Buttons ------------------------------------------------------------ */
+button {
+  font-family: var(--sans);
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+}
+
+.btn-primary {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 13px 16px;
+  background: var(--green);
+  color: #f4efe2;
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.08s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+.btn-primary:hover {
+  background: var(--green-deep);
+}
+.btn-primary:active {
+  transform: translateY(1px) scale(0.995);
+}
+.btn-primary:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+.btn-primary svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ========================================================================
+   SHARED LIST + ITEM STYLES (used by the dashboard reading list)
+   ===================================================================== */
+body.popup {
+  width: 360px;
+  min-height: 220px;
+}
+.popup-wrap {
+  padding: 16px 16px 18px;
+}
+.popup-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.popup-head .mark {
+  font-size: 22px;
+}
+.popup-head .sub {
+  font-size: 9px;
+}
+.icon-btn {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  color: var(--ink-soft);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.icon-btn:hover {
+  background: var(--line);
+  color: var(--ink);
+}
+.icon-btn svg {
+  width: 17px;
+  height: 17px;
+}
+
+.current-page {
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin: 0 2px 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.current-page strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--line-strong), transparent);
+  margin: 16px 0 12px;
+}
+
+.list-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin: 0 2px 8px;
+}
+
+.list {
+  list-style: none;
+  max-height: 280px;
+  overflow-y: auto;
+  margin: 0 -4px;
+  padding: 0 4px;
+}
+.list::-webkit-scrollbar {
+  width: 8px;
+}
+.list::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+  border-radius: 8px;
+}
+
+.item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 9px 8px;
+  border-radius: var(--radius-sm);
+  transition: background 0.15s ease;
+  /* Entrance animation, staggered via inline animation-delay set in JS. */
+  opacity: 0;
+  transform: translateY(6px);
+  animation: rise 0.34s ease forwards;
+}
+@keyframes rise {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.item:hover {
+  background: var(--paper-2);
+}
+
+/* The read/unread checkbox, drawn from scratch for a tactile feel. */
+.check {
+  flex: 0 0 auto;
+  margin-top: 1px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid var(--line-strong);
+  display: grid;
+  place-items: center;
+  color: transparent;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+.check:hover {
+  border-color: var(--green);
+}
+.check svg {
+  width: 11px;
+  height: 11px;
+}
+.item.read .check {
+  background: var(--green);
+  border-color: var(--green);
+  color: #f4efe2;
+}
+
+.item-body {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.item-title {
+  display: block;
+  font-size: 13.5px;
+  line-height: 1.35;
+  color: var(--ink);
+  text-decoration: none;
+  cursor: pointer;
+  /* Clamp to two lines so long headlines stay tidy. */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.item-title:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.item-meta {
+  font-size: 11px;
+  color: var(--ink-faint);
+  margin-top: 3px;
+}
+.item.read .item-title {
+  color: var(--ink-faint);
+  text-decoration: line-through;
+  text-decoration-color: var(--line-strong);
+}
+
+.del {
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  display: grid;
+  place-items: center;
+  color: var(--ink-faint);
+  opacity: 0;
+  transition: opacity 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+.item:hover .del {
+  opacity: 1;
+}
+.del:hover {
+  background: rgba(191, 90, 44, 0.12);
+  color: var(--ember);
+}
+.del svg {
+  width: 14px;
+  height: 14px;
+}
+
+.empty {
+  text-align: center;
+  padding: 26px 18px 22px;
+  color: var(--ink-soft);
+}
+.empty .ornament {
+  color: var(--line-strong);
+  margin-bottom: 10px;
+}
+.empty .ornament svg {
+  width: 34px;
+  height: 34px;
+}
+.empty p {
+  font-size: 13px;
+  line-height: 1.5;
+}
+.empty .display {
+  font-family: var(--display);
+  font-size: 16px;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+/* ========================================================================
+   OPTIONS / SETTINGS PAGE
+   ===================================================================== */
+body.options {
+  min-height: 100vh;
+}
+.options-wrap {
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 56px 24px 80px;
+}
+.options-head {
+  margin-bottom: 8px;
+}
+.options-head .mark {
+  font-size: 40px;
+}
+.options-head .sub {
+  font-size: 11px;
+}
+.options-lede {
+  font-family: var(--display);
+  font-size: 18px;
+  color: var(--ink-soft);
+  margin: 10px 0 36px;
+  line-height: 1.5;
+  max-width: 46ch;
+}
+
+.card {
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 24px 24px 8px;
+  margin-bottom: 22px;
+  box-shadow: var(--shadow-sm);
+}
+.card h2 {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 20px;
+  margin-bottom: 4px;
+}
+.card .card-note {
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.5;
+  margin-bottom: 18px;
+}
+
+.field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 14px 0;
+  border-top: 1px solid var(--line);
+}
+.field:first-of-type {
+  border-top: none;
+}
+.field-label {
+  font-size: 14px;
+  font-weight: 600;
+}
+.field-hint {
+  font-size: 12px;
+  color: var(--ink-faint);
+  margin-top: 2px;
+  line-height: 1.4;
+  max-width: 34ch;
+}
+.field-control {
+  flex: 0 0 auto;
+}
+
+input[type="time"],
+input[type="number"],
+input[type="text"] {
+  font-family: var(--sans);
+  font-size: 14px;
+  color: var(--ink);
+  background: var(--paper-3);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  padding: 9px 11px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+input[type="number"] {
+  width: 76px;
+}
+input[type="text"] {
+  width: 230px;
+}
+input:focus {
+  outline: none;
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px var(--green-tint);
+}
+
+/* Day-of-week pill toggles */
+.days {
+  display: flex;
+  gap: 6px;
+}
+.day {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1.5px solid var(--line-strong);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink-soft);
+  transition: all 0.15s ease;
+}
+.day:hover {
+  border-color: var(--green);
+}
+.day.on {
+  background: var(--green);
+  border-color: var(--green);
+  color: #f4efe2;
+}
+
+.options-foot {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 28px;
+}
+.save-btn {
+  background: var(--green);
+  color: #f4efe2;
+  padding: 12px 26px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: var(--shadow-sm);
+  transition: background 0.2s ease, transform 0.08s ease;
+}
+.save-btn:hover {
+  background: var(--green-deep);
+}
+.save-btn:active {
+  transform: translateY(1px);
+}
+.saved-note {
+  font-size: 13px;
+  color: var(--green);
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.saved-note.show {
+  opacity: 1;
+}
+
+/* --- Dashboard additions (reading list + section nav) ------------------- */
+.dash-nav {
+  display: flex;
+  gap: 8px;
+  margin: 0 0 30px;
+}
+.dash-nav a {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  text-decoration: none;
+  padding: 7px 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  transition: all 0.15s ease;
+}
+.dash-nav a:hover {
+  background: var(--green);
+  border-color: var(--green);
+  color: #f4efe2;
+}
+
+#reading-list,
+#settings {
+  scroll-margin-top: 24px;
+}
+#settings {
+  margin-top: 40px;
+}
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+.display-h {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 26px;
+  color: var(--ink);
+}
+.section-head .count {
+  font-family: var(--sans);
+  font-size: 12px;
+  color: var(--ink-faint);
+  letter-spacing: 0.02em;
+}
+
+/* On the dashboard the page itself scrolls, so the list isn't a capped box. */
+.list-card {
+  padding: 8px 12px;
+}
+.dash-list {
+  max-height: none;
+  margin: 0;
+  padding: 0;
+}
+.dash-list .item {
+  padding: 12px 8px;
+  border-bottom: 1px solid var(--line);
+}
+.dash-list .item:last-child {
+  border-bottom: none;
+}
+.dash-list .item-title {
+  font-size: 15px;
+}
+
+/* The small "Scheduled" tag on items already placed in a calendar block. */
+.tag {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+.tag.scheduled {
+  background: var(--green-tint);
+  color: var(--green-deep);
+}
+
+/* ========================================================================
+   REVIEW WINDOW (the after-the-block checklist popup)
+   ===================================================================== */
+body.review {
+  min-height: 100vh;
+}
+.review-wrap {
+  padding: 22px 22px 24px;
+}
+.review-head .mark {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--ink);
+}
+.review-title {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 26px;
+  margin-top: 14px;
+}
+.review-intro {
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.5;
+  margin: 6px 0 18px;
+}
+.review-list {
+  list-style: none;
+}
+.review-row {
+  border-top: 1px solid var(--line);
+}
+.review-row:last-child {
+  border-bottom: 1px solid var(--line);
+}
+.review-rowlabel {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 13px 4px;
+  cursor: pointer;
+}
+.review-rowlabel input[type="checkbox"] {
+  margin-top: 1px;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+  accent-color: var(--green);
+  cursor: pointer;
+}
+.review-body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+.review-itemtitle {
+  font-size: 14px;
+  line-height: 1.35;
+  color: var(--ink);
+}
+.review-itemmeta {
+  font-size: 11px;
+  color: var(--ink-faint);
+}
+.review-foot {
+  margin-top: 22px;
+}
+.review-foot .save-btn {
+  width: 100%;
+  text-align: center;
+}

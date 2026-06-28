@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Reading Block</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="options">
+    <div class="options-wrap">
+      <header class="options-head">
+        <div class="brand">
+          <span class="mark">Reading Block</span>
+        </div>
+      </header>
+      <p class="options-lede">
+        Your reading list and preferences. Click the toolbar icon on any page to save it here;
+        every fifth save books a quiet reading block on your calendar.
+      </p>
+
+      <nav class="dash-nav">
+        <a href="#reading-list">Reading list</a>
+        <a href="#settings">Settings</a>
+      </nav>
+
+      <!-- ================= READING LIST ================= -->
+      <section id="reading-list">
+        <div class="section-head">
+          <h2 class="display-h">Reading list</h2>
+          <span class="count" id="list-count"></span>
+        </div>
+        <div class="card list-card">
+          <ul class="list dash-list" id="list"></ul>
+        </div>
+      </section>
+
+      <!-- ================= SETTINGS ================= -->
+      <section id="settings">
+        <div class="section-head">
+          <h2 class="display-h">Settings</h2>
+        </div>
+
+        <section class="card">
+          <h2>When can you read?</h2>
+          <p class="card-note">
+            Reading Block only books on these days, inside this time window, and only where you
+            have no other events.
+          </p>
+
+          <div class="field">
+            <div>
+              <div class="field-label">Days</div>
+              <div class="field-hint">Which days are fair game for a reading block.</div>
+            </div>
+            <div class="field-control"><div class="days" id="days"></div></div>
+          </div>
+
+          <div class="field">
+            <div>
+              <div class="field-label">Earliest start</div>
+              <div class="field-hint">The block won't start before this time.</div>
+            </div>
+            <div class="field-control"><input type="time" id="windowStart" /></div>
+          </div>
+
+          <div class="field">
+            <div>
+              <div class="field-label">Latest end</div>
+              <div class="field-hint">The block will finish by this time.</div>
+            </div>
+            <div class="field-control"><input type="time" id="windowEnd" /></div>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>The reading block</h2>
+          <p class="card-note">How long each session is, and how many saves trigger one.</p>
+
+          <div class="field">
+            <div>
+              <div class="field-label">Block length</div>
+              <div class="field-hint">Minutes set aside for each Focus Reading session.</div>
+            </div>
+            <div class="field-control"><input type="number" id="blockMinutes" min="5" max="240" step="5" /></div>
+          </div>
+
+          <div class="field">
+            <div>
+              <div class="field-label">Saves per block</div>
+              <div class="field-hint">How many saved articles make one reading block.</div>
+            </div>
+            <div class="field-control"><input type="number" id="batchSize" min="1" max="20" step="1" /></div>
+          </div>
+
+          <div class="field">
+            <div>
+              <div class="field-label">Search ahead</div>
+              <div class="field-hint">How many days forward to look for a free slot.</div>
+            </div>
+            <div class="field-control"><input type="number" id="lookaheadDays" min="1" max="60" step="1" /></div>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Calendar</h2>
+          <p class="card-note">
+            Leave the calendar as <strong>primary</strong> for your main Google Calendar. While
+            testing, paste a <strong>test</strong> calendar's ID here so nothing lands on your real
+            schedule.
+          </p>
+
+          <div class="field">
+            <div>
+              <div class="field-label">Event title</div>
+              <div class="field-hint">What the block is called on your calendar.</div>
+            </div>
+            <div class="field-control"><input type="text" id="eventTitle" /></div>
+          </div>
+
+          <div class="field">
+            <div>
+              <div class="field-label">Calendar ID</div>
+              <div class="field-hint">"primary", or a test calendar's ID (looks like an email).</div>
+            </div>
+            <div class="field-control"><input type="text" id="calendarId" /></div>
+          </div>
+        </section>
+
+        <div class="options-foot">
+          <button class="save-btn" id="save">Save settings</button>
+          <span class="saved-note" id="saved-note">Saved</span>
+        </div>
+      </section>
+    </div>
+
+    <script type="module" src="options.js"></script>
+  </body>
+</html>

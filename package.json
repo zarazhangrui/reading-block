@@ -1,0 +1,10 @@
+{
+  "name": "deepread-calendar",
+  "version": "0.1.0",
+  "description": "Chrome extension: save articles and auto-schedule Focus Reading blocks on Google Calendar.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test"
+  }
+}

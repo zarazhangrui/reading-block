@@ -1,0 +1,45 @@
+{
+  "manifest_version": 3,
+  "name": "Reading Block",
+  "version": "0.1.0",
+  "description": "Save articles with one click. Every 5 saves becomes a reading block on your Google Calendar.",
+
+  "action": {
+    "default_title": "Save this page to Reading Block",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png",
+      "48": "icons/icon-48.png",
+      "128": "icons/icon-128.png"
+    }
+  },
+
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+
+  "options_ui": {
+    "page": "src/options.html",
+    "open_in_tab": true
+  },
+
+  "background": {
+    "service_worker": "src/service-worker.js",
+    "type": "module"
+  },
+
+  "permissions": ["storage", "identity", "activeTab", "notifications", "contextMenus", "scripting", "alarms"],
+
+  "host_permissions": ["https://www.googleapis.com/*"],
+
+  "oauth2": {
+    "client_id": "PASTE_YOUR_GOOGLE_CLIENT_ID_HERE.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/calendar.events",
+      "https://www.googleapis.com/auth/calendar.readonly"
+    ]
+  }
+}

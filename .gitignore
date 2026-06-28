@@ -1,0 +1,9 @@
+# Dependencies (none required, but ignore if ever added)
+node_modules/
+
+# OS noise
+.DS_Store
+
+# Local preview/scratch files
+src/_preview_*.html
+.playwright-mcp/
