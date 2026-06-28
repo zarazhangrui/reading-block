@@ -66,18 +66,15 @@ chrome.alarms.onAlarm.addListener((alarm) => {
 
 // --- Left-click on the icon: save the current page --------------------------
 chrome.action.onClicked.addListener((tab) => {
-  saveCurrentTab(tab).catch((err) => notify("Couldn't save", err.message));
+  saveCurrentTab(tab).catch((err) => console.error("Reading Block:", err));
 });
 
 async function saveCurrentTab(tab) {
   const url = tab?.url || "";
   // Only normal web pages can be saved (not chrome:// pages, the dashboard, the
-  // new-tab page, etc.). On those we can't inject our confirmation either, so we
-  // just send a quiet notification instead of marking the icon.
-  if (!/^https?:/i.test(url)) {
-    notify("Nothing to save here", "Reading Block saves normal web pages. Open an article and try again.");
-    return;
-  }
+  // new-tab page, etc.). On those there's nothing to do and we can't inject our
+  // confirmation either, so we quietly do nothing.
+  if (!/^https?:/i.test(url)) return;
 
   const result = await saveAndMaybeSchedule(url, tab.title);
   if (tab.id == null) return;
@@ -91,6 +88,14 @@ async function saveCurrentTab(tab) {
       savedId: result.item.id,
       eventId: result.scheduled.eventId,
       batchIds: result.scheduled.batchIds,
+    });
+  } else if (result.scheduleError) {
+    // The page was saved, but booking the block failed (e.g. no free slot). Say
+    // so right in the toast instead of via a system notification.
+    showInPageToast(tab.id, {
+      mode: "saved",
+      savedId: result.item.id,
+      note: "Couldn't book a block yet.",
     });
   } else {
     showInPageToast(tab.id, { mode: "saved", savedId: result.item.id });
@@ -148,7 +153,7 @@ async function showInPageToast(tabId, opts) {
 // This function is serialized and run INSIDE the saved page. It must be fully
 // self-contained (no outside variables) and uses inline styles inside a shadow
 // root so the host page's CSS can't touch it and its CSS can't touch the page.
-// `opts` is { mode:'saved'|'booked', savedId, when?, eventId?, batchIds? }.
+// `opts` is { mode:'saved'|'booked', savedId, note?, when?, eventId?, batchIds? }.
 function deepreadToast(opts) {
   const HOST_ID = "__readingblock_toast__";
   const old = document.getElementById(HOST_ID);
@@ -190,6 +195,12 @@ function deepreadToast(opts) {
     line1.textContent = "Saved to Reading Block";
     line1.style.cssText = "font-weight:500;";
     text.append(line1);
+    if (opts.note) {
+      const line2 = document.createElement("div");
+      line2.textContent = opts.note;
+      line2.style.cssText = "color:#6d6049;margin-top:2px;font-size:13px;";
+      text.append(line2);
+    }
   }
 
   const undo = document.createElement("button");
@@ -269,27 +280,11 @@ async function saveAndMaybeSchedule(url, title) {
       },
     };
   } catch (err) {
-    notify("Couldn't book your reading block", err.message);
     return { item, scheduled: null, scheduleError: err.message };
   }
 }
 
 // --- Small helpers ----------------------------------------------------------
-
-// Pop a small desktop notification. Never lets a notification failure break a
-// booking.
-function notify(title, message) {
-  try {
-    chrome.notifications.create({
-      type: "basic",
-      iconUrl: chrome.runtime.getURL("icons/icon-128.png"),
-      title,
-      message,
-    });
-  } catch (_) {
-    /* notifications are a nicety, not essential */
-  }
-}
 
 // Friendly date like "Mon, Jun 29 at 2:00 PM" in the machine's local time.
 function formatWhen(date) {

@@ -31,7 +31,7 @@
     "type": "module"
   },
 
-  "permissions": ["storage", "identity", "activeTab", "notifications", "contextMenus", "scripting", "alarms"],
+  "permissions": ["storage", "identity", "activeTab", "contextMenus", "scripting", "alarms"],
 
   "host_permissions": ["https://www.googleapis.com/*"],
 
